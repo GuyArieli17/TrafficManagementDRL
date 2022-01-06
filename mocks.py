@@ -4,10 +4,14 @@ class Agent:
         self.memory = []
     
     def remember(self,state, action_phase, reward, next_state) -> None:
-        self.memory.append(state, action_phase, reward, next_state)
+        self.memory.append((state, action_phase, reward, next_state))
 
     def choose_action(self,state) -> int:
         return 0
     
-    def update_target_network() -> None:
+    def update_target_network(self) -> None:
+        pass
+
+
+    def replay(self) -> None:
         pass
