@@ -1,5 +1,7 @@
 import json
 import argparse
+import matplotlib
+import matplotlib.pyplot as plt
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
@@ -67,8 +69,6 @@ def plot_data_lists(data_list,
     data_list: data1, data2, data3...
     plot this datas in one plot
     '''
-    import matplotlib
-    import matplotlib.pyplot as plt
     if save:
         matplotlib.use('PDF')
 
