@@ -109,9 +109,6 @@ def build_env(config,cityflow_config,model_dir,result_dir,
 
 
 
-
-
-
 def interface():
     # Todo: Implement
     pass
@@ -144,7 +141,7 @@ def run():
     args = parser.parse_args()
 
     # ------- Get All information from user ------- 
-    EPISODES = args.epoch
+    episodes = args.epoch
     learning_start = 200
     update_model_freq = args.batch_size
     update_target_model_freq = 200
@@ -154,8 +151,6 @@ def run():
     algo_str = args.algo
     phase_step = args.phase_step
     save_freq = args.save_freq
-    
-
 
     # get config file path
     config = json.load(open(config_path))
@@ -193,7 +188,8 @@ def run():
     config["result_dir"] = result_dir
 
     if not args.inference:
-        build_env()
+        build_env(config,cityflow_config,model_dir,result_dir,num_step,episodes,agent,phase_list,interval,
+                    phase_step,save_freq,update_model_freq,learning_start,update_model_freq, algo_str)
     else:
         interface()
 
