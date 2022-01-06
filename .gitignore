@@ -1,3 +1,5 @@
 gym_cityflow/*
 CityFlow/*
 __pycache__/*
+*.csv
+*.pdf
