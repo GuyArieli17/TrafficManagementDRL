@@ -1,11 +1,6 @@
 import random
 import numpy as np
 from collections import deque
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.optimizers import Adam
-import keras.backend.tensorflow_backend as KTF
-import tensorflow as tf
 import os
 
 
@@ -29,14 +24,8 @@ class DQNAgent:
         self.phase_list = config['lane_phase_info'][intersection_id]['phase']
 
     def _build_model(self):
-        # Neural Net for Deep-Q learning Model
-        model = Sequential()
-        model.add(Dense(40, input_dim=self.state_size, activation='relu'))
-        model.add(Dense(40, activation='relu'))
-        model.add(Dense(self.action_size, activation='linear'))
-        model.compile(loss='mse',
-                      optimizer=Adam(lr=self.learning_rate))
-        return model
+        # Todo: build model
+        pass
 
     def update_target_network(self):
         weights = self.model.get_weights()
