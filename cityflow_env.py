@@ -106,9 +106,5 @@ class CityFlowEnv:
     def log(self):
         if not os.path.exists(self.config['replay_data_path']):
             os.makedirs(self.config["replay_data_path"])
-
-        # self.eng.print_log(self.config['replay_data_path'] + "/replay_roadnet.json",
-        #                    self.config['replay_data_path'] + "/replay_flow.json")
-
         df = pd.DataFrame({self.intersection_id: self.phase_log[:self.num_step]})
         df.to_csv(os.path.join(self.config['replay_data_path'], 'signal_plan.txt'), index=None)
