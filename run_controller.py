@@ -7,13 +7,16 @@ import numpy as np
 from datetime import datetime
 from utils import parse_roadnet, plot_data_lists
 from tqdm import tqdm
-
+from cityflow_env import CityFlowEnv
 import pandas as pd
 import time
+from mocks import Agent as AgentMock
 
-class CityFlowEnv:
-    #Todo: implement
-    pass
+# -------- HYPER PARAMS --------
+LEARNING_START = 200
+UPDATE_TARGET_FREQ = 200
+INTERVAL = 1
+
 
 
 def build_env(config,cityflow_config,model_dir,result_dir,
@@ -25,14 +28,13 @@ def build_env(config,cityflow_config,model_dir,result_dir,
     # create env
     env = CityFlowEnv(config)
     # crete new folder if not exist
-    if not os.path.exists("model"):
-        os.makedirs("model")
-    if not os.path.exists("result"):
-        os.makedirs("result")
+    if not os.path.exists("model-info"):
+        os.makedirs("model-info")
+    if not os.path.exists("result-info"):
+        os.makedirs("result-info")
     # create model | result folder
     os.makedirs(model_dir)
     os.makedirs(result_dir)
-
     # training
     total_step = 0
     episode_rewards = []
@@ -90,7 +92,6 @@ def build_env(config,cityflow_config,model_dir,result_dir,
             episode_rewards.append(episode_reward)
             episode_scores.append(episode_score)
             print("score: {}, mean reward:{}".format(episode_score, episode_reward / num_step))
-
             # save model
             if (i + 1) % save_freq == 0:
                 #Todo: save model
@@ -105,7 +106,6 @@ def build_env(config,cityflow_config,model_dir,result_dir,
         # save figure
         plot_data_lists([episode_rewards], ['episode reward'], figure_name=result_dir + '/rewards.pdf')
         plot_data_lists([episode_scores], ['episode score'], figure_name=result_dir + '/scores.pdf')
-
 
 
 
@@ -142,10 +142,10 @@ def run():
 
     # ------- Get All information from user ------- 
     episodes = args.epoch
-    learning_start = 200
+    learning_start = LEARNING_START
     update_model_freq = args.batch_size
-    update_target_model_freq = 200
-    interval = 1
+    update_target_model_freq = UPDATE_TARGET_FREQ
+    interval = INTERVAL
     config_path = args.config
     num_step = args.num_step
     algo_str = args.algo
@@ -162,7 +162,6 @@ def run():
     # get rodnet file path
     roadnetFile = cityflow_config['dir'] + cityflow_config['roadnetFile']
 
-
     # dict with information for each intersection
     lane_info = parse_roadnet(roadnetFile)
     # set main intesection_id
@@ -172,12 +171,13 @@ def run():
     # get phase from main intersection
     phase_list = lane_info[intersection_id]['phase']
     # get model and result path
-    model_dir = f"model/{algo_str}_{date}"
-    result_dir = f"result/{algo_str}_{date}"
+    model_dir = f"model-info/{algo_str}_{date}"
+    result_dir = f"result-info/{algo_str}_{date}"
 
     # Todo: create agent for each input
     if algo_str == 'DQN':
-        agent = None
+        # mocke defult 
+        agent = AgentMock()
 
     # ----- set config dict (json) -----
     config["action_size"] = len(phase_list)
